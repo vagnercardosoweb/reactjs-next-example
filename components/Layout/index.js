@@ -2,9 +2,11 @@ import './style.scss';
 import React, { Component } from 'react';
 import Header from '../Header';
 
-export default Page =>
+export default async Page =>
   class extends Component {
-    static getInitialProps = Page.getInitialProps;
+    static getInitialProps = Page.getInitialProps
+      ? await Page.getInitialProps
+      : {};
 
     constructor(props) {
       super(props);
@@ -19,12 +21,3 @@ export default Page =>
       );
     }
   };
-
-// export default function Layout({ children }) {
-//   return (
-//     <div className="layout">
-//       <Header />
-//       {children}
-//     </div>
-//   );
-// }

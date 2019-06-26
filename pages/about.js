@@ -1,7 +1,3 @@
-import { withRouter } from 'next/router';
-
 import withLayout from '../components/Layout';
 
-export default withLayout(
-  withRouter(({ router }) => <pre>{JSON.stringify(router, '\t', 2)}</pre>)
-);
+export default withLayout(() => <h1>About</h1>);

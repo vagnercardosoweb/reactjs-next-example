@@ -1,36 +1,35 @@
-import 'isomorphic-unfetch';
-import Link from 'next/link';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { Actions } from '../store/ducks/repositories';
 import withLayout from '../components/Layout';
 
-const Index = props => (
-  <>
-    <h1>Marvel TV Shows</h1>
+function Index() {
+  const repositories = useSelector(state => state.repositories);
+  const dispatch = useDispatch();
 
-    <ul>
-      {props.shows.map(({ id, name }) => (
-        <li key={id}>
-          <Link
-            as={`/show/${id}`}
-            href={{ pathname: '/show', query: { id } }}
-            prefetch
-            passHref
-          >
-            <a>{name}</a>
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </>
-);
+  useEffect(() => {
+    async function fetch() {
+      await dispatch(Actions.fetchByUser('vagnercardosoweb'));
+    }
 
-Index.getInitialProps = async function() {
-  const res = await fetch('https://api.tvmaze.com/search/shows?q=marvel');
-  const data = await res.json();
+    fetch();
+  }, []);
 
-  return {
-    shows: data.map(entry => entry.show)
-  };
-};
+  return (
+    <>
+      <h1>My Repositories</h1>
+
+      <ul>
+        {repositories.loading && <li>Loadding repositories...</li>}
+        {repositories.data
+          .filter(({ fork }) => !fork)
+          .map(({ id, name }) => (
+            <li key={id}>{name}</li>
+          ))}
+      </ul>
+    </>
+  );
+}
 
 export default withLayout(Index);

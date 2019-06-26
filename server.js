@@ -11,12 +11,12 @@ app
   .then(() => {
     const server = express();
 
-    server.get('/show/:id', (req, res) => {
-      return app.render(req, res, '/show', {
-        ...req.params,
-        ...req.query
-      });
-    });
+    // server.get('/show/:id', (req, res) => {
+    //   return app.render(req, res, '/show', {
+    //     ...req.params,
+    //     ...req.query
+    //   });
+    // });
 
     server.get('*', (req, res) => {
       return handle(req, res);
